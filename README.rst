@@ -1,1 +1,1 @@
-Markdown extensions that facilitate hyde website generation.
+Markdown extensions for hyde static website generator.

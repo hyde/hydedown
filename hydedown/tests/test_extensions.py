@@ -12,7 +12,7 @@ def file_here(fname):
 kwargs = {
     "sections": {
         "extensions": [
-            'hyde.markdown.extensions.sections',
+            'hydedown.sections',
             'headerid'
         ]
     }

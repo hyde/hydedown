@@ -1,6 +1,4 @@
-from distribute_setup import use_setuptools
-use_setuptools()
-from setuptools import setup
+from setuptools import setup, find_packages
 
 try:
     long_description = open('README.rst', 'rt').read()
@@ -8,11 +6,11 @@ except IOError:
     long_description = ''
 
 setup(
-    name='hyde-markdown-extensions',
+    name='hydedown',
     version='0.1',
     author='Lakshmi Vyas',
     author_email='lakshmi.vyas@gmail.com',
-    url='http://github.com/hyde/hyde-markdown-extensions',
+    url='http://github.com/hyde/hydedown',
     description='Markdown extensions that facilitate hyde website generation',
     long_description=long_description,
     license='MIT',
@@ -24,7 +22,7 @@ setup(
         'Programming Language :: Python',
         'Topic :: Software Development',
     ],
-    provides=['hyde'],
+    packages=find_packages(),
     install_requires=['Markdown==2.3.1'],
     tests_require=(
         'nose',

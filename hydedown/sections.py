@@ -9,7 +9,7 @@ Single section:
 
     >>> import markdown
     >>> text = "# Some Header #"
-    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hyde.markdown.extensions.sections'])
+    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hydedown.sections'])
     >>> print md
     <section class="level1" id="section_some-header"><h1 id="some-header">Some Header</h1>
     </section>
@@ -18,7 +18,7 @@ Single section with id attribute:
 
     >>> import markdown
     >>> text = "# Some Header{@id=the_header}"
-    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hyde.markdown.extensions.sections'])
+    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hydedown.sections'])
     >>> print md
     <section class="level1" id="section_the_header"><h1 id="the_header">Some Header</h1>
     </section>
@@ -27,7 +27,7 @@ Single section with class attribute:
 
     >>> import markdown
     >>> text = "# Some Header{: .title #the_header}"
-    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hyde.markdown.extensions.sections'])
+    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hydedown.sections'])
     >>> print md
     <section class="level1 title" id="section_the_header"><h1 class="title" id="the_header">Some Header</h1>
     </section>
@@ -41,7 +41,7 @@ Two sections:
     ... ## Some second level header
     ... Some more text
     ... '''
-    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hyde.markdown.extensions.sections'])
+    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hydedown.sections'])
     >>> print md
     <section class="level1 has1" id="section_some-header"><h1 id="some-header">Some Header</h1>
     <p>Some text</p>
@@ -60,7 +60,7 @@ Three sections:
     ... ## Another second level header
     ... Even more text
     ... '''
-    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hyde.markdown.extensions.sections'])
+    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hydedown.sections'])
     >>> print md
     <section class="level1 has2" id="section_some-header"><h1 id="some-header">Some Header</h1>
     <p>Some text</p>
@@ -87,7 +87,7 @@ Multiple level ones:
     ... ### Third level header Two
     ... Even more text two
     ... '''
-    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hyde.markdown.extensions.sections'])
+    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hydedown.sections'])
     >>> print md
     <section class="level1 has2" id="section_some-header"><h1 id="some-header">Some Header</h1>
     <p>Some text</p>
@@ -114,7 +114,7 @@ hgroup three headers:
     ... ## Another second level header
     ... Even more text
     ... '''
-    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hyde.markdown.extensions.sections'])
+    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hydedown.sections'])
     >>> print md
     <section class="level1 has1" id="section_some-header"><hgroup class="level1" id="hgroup_some-header"><h1 id="some-header">Some Header</h1>
     <h2 id="some-second-level-header">Some second level header</h2>
@@ -134,7 +134,7 @@ hgroup level two:
     ... ## Another second level header
     ... Even more text
     ... '''
-    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hyde.markdown.extensions.sections'])
+    >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hydedown.sections'])
     >>> print md
     <section class="level1 has1" id="section_some-header"><h1 id="some-header">Some Header</h1>
     <p>Some text</p>

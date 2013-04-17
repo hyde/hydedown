@@ -15,13 +15,13 @@ are not transformed by the markdown processor at all.
     ... *passed through*
     ... +++++
     ... '''
-    >>> html = markdown.markdown(text, extensions=['hyde.markdown.extensions.passthrough'])
+    >>> html = markdown.markdown(text, extensions=['hydedown.passthrough'])
     >>> html
     u'<p>A paragraph before a <em>passthrough</em> block:</p>\\n*passed through*'
 
 Works with safe_mode also (we check this because we are using the HtmlStash):
 
-    >>> markdown.markdown(text, extensions=['hyde.markdown.extensions.passthrough'], safe_mode='replace')
+    >>> markdown.markdown(text, extensions=['hydedown.passthrough'], safe_mode='replace')
     u'<p>A paragraph before a <em>passthrough</em> block:</p>\\n*passed through*'
 
 Author:
