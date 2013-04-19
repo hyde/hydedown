@@ -157,6 +157,7 @@ Dependencies:
 import markdown
 from markdown.util import etree
 
+from collections import deque
 from itertools import izip_longest, tee
 
 def is_true(s, default=False):
@@ -246,8 +247,9 @@ class SectionsAssember(object):
             css_classes.append('has' + str(count))
             self.current_section.set('class', ' '.join(css_classes))
 
-        if parent and header in parent:
+        if parent is not None and header in parent:
             parent.remove(header)
+
         self.current_section = self.make_section(header, parent)
         self.current_level = level
 
@@ -264,32 +266,37 @@ class SectionsAssember(object):
             if parent is not None and element in parent:
                 parent.remove(element)
 
-
     def assemble(self, elem):
-        section = None
-        hgroup = None
-        for first, second in pairwise(elem.getchildren()):
-            if hgroup is None and first.tag in self.headers:
-                self.begin_section(first, elem)
-                self.remove_element(first, {elem})
-                section = self.current_section
-                section.append(first)
+        queue = deque()
+        queue.append(elem)
+        while True:
+            try:
+                section, hgroup, child = None, None, queue.popleft()
+            except IndexError:
+                break
+            children = list(child)
+            for first, second in pairwise(children):
+                if hgroup is None and first.tag in self.headers:
+                    self.begin_section(first, elem)
+                    self.remove_element(first, {elem})
+                    section = self.current_section
+                    section.append(first)
 
-            if (first.tag in self.allheaders and
+                if (first.tag in self.allheaders and
                     second is not None and second.tag in self.allheaders):
-                self.remove_element(first, {section, elem})
-                self.remove_element(second, {section, elem})
-                hgroup = self.hgroup(first, second, hgroup or section)
+                    self.remove_element(first, {section, elem})
+                    self.remove_element(second, {section, elem})
+                    hgroup = self.hgroup(first, second,
+                        hgroup if hgroup is not None else section)
 
-            if first in elem and section is not None:
-                self.remove_element(first, {elem})
-                section.append(first)
+                if first in elem and section is not None:
+                    self.remove_element(first, {elem})
+                    section.append(first)
 
-            if second is None or second.tag not in self.allheaders:
-                hgroup = None
+                if second is None or second.tag not in self.allheaders:
+                    hgroup = None
 
-            if len(first):
-                self.assemble(first)
+                queue.append(first)
 
 class SectionsTreeprocessor(markdown.treeprocessors.Treeprocessor):
 

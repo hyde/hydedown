@@ -7,7 +7,7 @@ except IOError:
 
 setup(
     name='hydedown',
-    version='0.1',
+    version='0.1.1',
     author='Lakshmi Vyas',
     author_email='lakshmi.vyas@gmail.com',
     url='http://github.com/hyde/hydedown',
