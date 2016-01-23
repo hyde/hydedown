@@ -25,7 +25,7 @@ Works with safe_mode also (we check this because we are using the HtmlStash):
     u'<p>A paragraph before a <em>passthrough</em> block:</p>\\n*passed through*'
 
 Author:
-Lakshmi Vyasarajan for the Hyde project(http://github.com/hyde)     2011-05-02
+Hyde contributors for the Hyde project(http://github.com/hyde)     2011-05-02
 
 License: BSD (see ../docs/LICENSE for details)
 
@@ -39,11 +39,11 @@ import re
 import markdown
 
 # Global vars
-PASSTHROUGH_BLOCK_RE = re.compile( \
+PASSTHROUGH_BLOCK_RE = re.compile(
     r'(?P<passthrough>^\+{5,})[ ]*\n(?P<content>.*?)(?P=passthrough)[ ]*$',
-    re.MULTILINE|re.DOTALL
-    )
-PASSTHROUGH_MARKER= '<!-- hyde.passthrough.placeholder -->'
+    re.MULTILINE | re.DOTALL)
+PASSTHROUGH_MARKER = '<!-- hyde.passthrough.placeholder -->'
+
 
 class PassthroughExtension(markdown.Extension):
 
@@ -52,16 +52,18 @@ class PassthroughExtension(markdown.Extension):
         md.registerExtension(self)
 
         md.preprocessors.add('passthrough_block',
-                                 PassthroughBlockPreprocessor(md),
-                                 ">normalize_whitespace")
+                             PassthroughBlockPreprocessor(md),
+                             ">normalize_whitespace")
 
         md.postprocessors.add('passthrough_clean',
-                                 PassthroughBlockPostProcessor(),
-                                 "_end")
+                              PassthroughBlockPostProcessor(),
+                              "_end")
+
 
 class PassthroughBlockPostProcessor(markdown.postprocessors.Postprocessor):
     def run(self, text):
         return text.replace(PASSTHROUGH_MARKER, '')
+
 
 class PassthroughBlockPreprocessor(markdown.preprocessors.Preprocessor):
 
@@ -84,13 +86,14 @@ class PassthroughBlockPreprocessor(markdown.preprocessors.Preprocessor):
                 content = m.group('content')
                 content = PASSTHROUGH_MARKER + content
                 placeholder = self.markdown.htmlStash.store(content, safe=True)
-                text = '%s\n%s\n%s'% (text[:m.start()], placeholder, text[m.end():])
+                text = '%s\n%s\n%s' % (text[:m.start()], placeholder, text[m.end():])
             else:
                 break
         return text.split("\n")
 
-def makeExtension(configs=None):
-    return PassthroughExtension(configs=configs)
+
+def makeExtension(**configs):
+    return PassthroughExtension(configs)
 
 
 if __name__ == "__main__":

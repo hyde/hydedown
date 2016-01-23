@@ -6,6 +6,7 @@ import markdown
 
 HERE = os.path.dirname(__file__)
 
+
 def file_here(fname):
     return os.path.join(HERE, fname)
 
@@ -18,6 +19,7 @@ kwargs = {
     }
 }
 
+
 def check_extension(ext_name):
     with codecs.open(file_here(ext_name + '.txt'), encoding="utf-8") as f:
         input = f.read()
@@ -26,15 +28,16 @@ def check_extension(ext_name):
 
     out = markdown.markdown(input, **kwargs[ext_name])
     diff = [l for l in difflib.unified_diff(expected.splitlines(True),
-                                                out.splitlines(True),
-                                                n=3)]
+                                            out.splitlines(True),
+                                            n=3)]
     if diff:
         raise Exception('Output for extension "%s" failed to match expected '
-            'output.\n\n%s' % (ext_name, ''.join(diff))
-        )
+                        'output.\n\n%s' % (ext_name, ''.join(diff)))
+
 
 def test_sections():
     return check_extension('sections')
+
 
 def test_sections_simple():
     md = """
@@ -80,18 +83,8 @@ Some more new stuff
 
     out = markdown.markdown(md, **kwargs['sections'])
     diff = [l for l in difflib.unified_diff(html.splitlines(True),
-                                                out.splitlines(True),
-                                                n=3)]
+                                            out.splitlines(True),
+                                            n=3)]
     if diff:
         raise Exception('Output for extension sections failed to match expected '
-            'output.\n\n%s' % ''.join(diff)
-        )
-
-
-
-
-
-
-
-
-
+                        'output.\n\n%s' % ''.join(diff))

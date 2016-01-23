@@ -17,16 +17,16 @@ Single section:
 Single section with id attribute:
 
     >>> import markdown
-    >>> text = "# Some Header{@id=the_header}"
+    >>> text = "# Some Header {@id=the_header}"
     >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hydedown.sections'])
     >>> print md
-    <section class="level1" id="section_the_header"><h1 id="the_header">Some Header</h1>
+    <section class="level1" id="section_the_header"><h1 id="the_header">Some Header </h1>
     </section>
 
 Single section with class attribute:
 
     >>> import markdown
-    >>> text = "# Some Header{: .title #the_header}"
+    >>> text = "# Some Header {: .title #the_header}"
     >>> md = markdown.markdown(text, ['attr_list', 'headerid', 'hydedown.sections'])
     >>> print md
     <section class="level1 title" id="section_the_header"><h1 class="title" id="the_header">Some Header</h1>
@@ -144,7 +144,7 @@ hgroup level two:
     </section></section>
 
 Author:
-Lakshmi Vyasarajan for the Hyde project(http://github.com/hyde)     2012-02-16
+Hyde contributors for the Hyde project(http://github.com/hyde)     2012-02-16
 
 License: BSD (see ../docs/LICENSE for details)
 
@@ -160,6 +160,7 @@ from markdown.util import etree
 from collections import deque
 from itertools import izip_longest, tee
 
+
 def is_true(s, default=False):
     """ Convert a string to a booleen value. """
     s = str(s)
@@ -169,11 +170,13 @@ def is_true(s, default=False):
         return True
     return default
 
+
 def pairwise(iterable):
     "s -> (s0,s1), (s1,s2), (s2, s3), ..."
     a, b = tee(iterable)
     next(b, None)
     return izip_longest(a, b)
+
 
 class SectionsAssember(object):
 
@@ -229,10 +232,10 @@ class SectionsAssember(object):
 
     def begin_section(self, header, parent):
         level = self.get_level(header)
-        while (not self.current_section is None and
-                    self.current_level >= level):
+        while (self.current_section is not None and
+               self.current_level >= level):
                 self.end_section()
-        if not self.current_section is None:
+        if self.current_section is not None:
             self.section_stack.append((self.current_section, self.current_level))
             parent = self.current_section
             css_classes = self.current_section.get('class', 'has0').split(' ')
@@ -254,7 +257,8 @@ class SectionsAssember(object):
         self.current_level = level
 
     def end_section(self):
-        if self.current_section is None: return
+        if self.current_section is None:
+            return
         if len(self.section_stack):
             self.current_section, self.current_level = self.section_stack.pop()
         else:
@@ -282,12 +286,17 @@ class SectionsAssember(object):
                     section = self.current_section
                     section.append(first)
 
-                if (first.tag in self.allheaders and
-                    second is not None and second.tag in self.allheaders):
+                if first.tag in self.allheaders and\
+                   second is not None and\
+                   second.tag in self.allheaders:
+
                     self.remove_element(first, {section, elem})
                     self.remove_element(second, {section, elem})
-                    hgroup = self.hgroup(first, second,
-                        hgroup if hgroup is not None else section)
+                    hgroup = self.hgroup(first,
+                                         second,
+                                         hgroup
+                                         if hgroup is not None
+                                         else section)
 
                 if first in elem and section is not None:
                     self.remove_element(first, {elem})
@@ -297,6 +306,7 @@ class SectionsAssember(object):
                     hgroup = None
 
                 queue.append(first)
+
 
 class SectionsTreeprocessor(markdown.treeprocessors.Treeprocessor):
 
@@ -316,8 +326,8 @@ class SectionsExtension(markdown.Extension):
     def __init__(self, configs):
         # set defaults
         self.config = {
-                'max_level' : ['3', 'Maximum header level for adding sections.'],
-                'class_prefix' : ['level', 'Prefix for section\'s class attribute.']
+                'max_level': ['3', 'Maximum header level for adding sections.'],
+                'class_prefix': ['level', 'Prefix for section\'s class attribute.']
             }
 
         for key, value in configs:
@@ -330,11 +340,12 @@ class SectionsExtension(markdown.Extension):
         self.processor.md = md
         self.processor.config = self.getConfigs()
         md.treeprocessors.add('sections',
-                                 self.processor,
-                                 "_end")
+                              self.processor,
+                              "_end")
 
-def makeExtension(configs=None):
-    return SectionsExtension(configs=configs)
+
+def makeExtension(**configs):
+    return SectionsExtension(configs)
 
 if __name__ == "__main__":
     import doctest
